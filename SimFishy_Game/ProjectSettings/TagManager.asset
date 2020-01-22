@@ -38,6 +38,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2941475015
+    locked: 0
+  - name: Menu
+    uniqueID: 1611876727
+    locked: 0
+  - name: Grid
+    uniqueID: 4102594791
+    locked: 0
+  - name: Objects
+    uniqueID: 2110430051
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
