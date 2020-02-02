@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a3fee75616c5ab0449e841e6fc8a5172
+guid: 8e41d29536f5e10408e6da5d1e171ffb
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -12,41 +12,22 @@ PluginImporter:
   validateReferences: 1
   platformData:
   - first:
-      '': Linux
-    second:
-      enabled: 1
-      settings:
-        CPU: None
-  - first:
-      '': LinuxUniversal
-    second:
-      enabled: 1
-      settings:
-        CPU: AnyCPU
-  - first:
-      '': OSXIntel
-    second:
-      enabled: 1
-      settings:
-        CPU: None
-  - first:
-      '': OSXIntel64
-    second:
-      enabled: 1
-      settings:
-        CPU: AnyCPU
-  - first:
-      '': SamsungTV
+      '': Any
     second:
       enabled: 0
       settings:
-        STV_MODEL: STANDARD_13
+        Exclude Android: 1
+        Exclude Editor: 0
+        Exclude Linux64: 1
+        Exclude OSXUniversal: 0
+        Exclude Win: 0
+        Exclude Win64: 0
   - first:
       Android: Android
     second:
       enabled: 0
       settings:
-        CPU: AnyCPU
+        CPU: ARMv7
   - first:
       Any: 
     second:
@@ -57,27 +38,27 @@ PluginImporter:
     second:
       enabled: 1
       settings:
-        CPU: x86_64
+        CPU: AnyCPU
         DefaultValueInitialized: true
         OS: AnyOS
   - first:
       Facebook: Win
     second:
-      enabled: 1
+      enabled: 0
       settings:
-        CPU: None
+        CPU: AnyCPU
   - first:
       Facebook: Win64
     second:
-      enabled: 1
+      enabled: 0
       settings:
         CPU: AnyCPU
   - first:
       Standalone: Linux64
     second:
-      enabled: 1
+      enabled: 0
       settings:
-        CPU: AnyCPU
+        CPU: None
   - first:
       Standalone: OSXUniversal
     second:
@@ -102,17 +83,6 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: AnyCPU
-        DontProcess: False
-        PlaceholderPath: 
-        SDK: AnySDK
-        ScriptingBackend: AnyScriptingBackend
-  - first:
-      iPhone: iOS
-    second:
-      enabled: 1
-      settings:
-        CompileFlags: 
-        FrameworkDependencies: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

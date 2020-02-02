@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a00620409803a41f598cabed0c2ecf9f
+guid: 1c1e2f14cddfd5b439b7ae10e3bda437
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -12,41 +12,20 @@ PluginImporter:
   validateReferences: 1
   platformData:
   - first:
-      '': Linux
+      '': Any
     second:
       enabled: 0
       settings:
-        CPU: x86
-  - first:
-      '': OSXIntel
-    second:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-  - first:
-      '': OSXIntel64
-    second:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-  - first:
-      '': SamsungTV
-    second:
-      enabled: 0
-      settings:
-        STV_MODEL: STANDARD_13
-  - first:
-      '': WP8
-    second:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-        DontProcess: False
-        PlaceholderPath: 
+        Exclude Android: 1
+        Exclude Editor: 0
+        Exclude Linux64: 0
+        Exclude OSXUniversal: 0
+        Exclude Win: 0
+        Exclude Win64: 0
   - first:
       Android: Android
     second:
-      enabled: 1
+      enabled: 0
       settings:
         CPU: ARMv7
   - first:
@@ -57,9 +36,9 @@ PluginImporter:
   - first:
       Editor: Editor
     second:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: AnyCPU
+        CPU: x86_64
         DefaultValueInitialized: true
         OS: AnyOS
   - first:
@@ -67,47 +46,37 @@ PluginImporter:
     second:
       enabled: 0
       settings:
-        CPU: AnyCPU
+        CPU: None
   - first:
       Facebook: Win64
     second:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
   - first:
       Standalone: Linux64
     second:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
+  - first:
+      Standalone: OSXUniversal
+    second:
+      enabled: 1
+      settings:
+        CPU: x86_64
   - first:
       Standalone: Win
     second:
-      enabled: 0
+      enabled: 1
       settings:
-        CPU: AnyCPU
+        CPU: None
   - first:
       Standalone: Win64
     second:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: AnyCPU
-  - first:
-      Windows Store Apps: WindowsStoreApps
-    second:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-        DontProcess: False
-        PlaceholderPath: 
-        SDK: AnySDK
-  - first:
-      iPhone: iOS
-    second:
-      enabled: 0
-      settings:
-        CompileFlags: 
-        FrameworkDependencies: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 
