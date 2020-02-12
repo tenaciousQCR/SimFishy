@@ -18,8 +18,11 @@ namespace DBClasses
             Shoal = shoal;
         }
 
-        void UpdateDB(SQLiteConnection connection) 
+        void UpdateDB(SQLiteConnection connection, string tablename) 
         {
+            SQLiteCommand cmnd = connection.CreateCommand();
+            //cmnd.CommandText = "INSERT INTO " + tablename + " (id, val) VALUES (" + id + ", " + val + ")";
+            cmnd.ExecuteNonQuery();
 
         }
 
