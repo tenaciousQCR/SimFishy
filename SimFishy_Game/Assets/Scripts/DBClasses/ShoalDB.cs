@@ -21,36 +21,38 @@ namespace DBClasses
         void UpdateDB(SQLiteConnection connection, string tablename) 
         {
             SQLiteCommand cmnd = connection.CreateCommand();
-            //cmnd.CommandText = "INSERT INTO " + tablename + " (id, val) VALUES (" + id + ", " + val + ")";
+            cmnd.CommandText = "INSERT INTO " + tablename + " (id, size) VALUES (" + Shoal.ShaolID + ", " + Shoal.Size + ")";
             cmnd.ExecuteNonQuery();
 
         }
 
-        void UpdateClass(SQLiteConnection connection)
+        void UpdateClass(SQLiteConnection connection, string tablename)
         {
-
+            SQLiteCommand cmnd_read = connection.CreateCommand();
+            IDataReader reader;
+            string query = "SELECT * FROM" + tablename + "WHERE id='"+ Shoal.ShaolID +"'";
+            cmnd_read.CommandText = query;
+            reader = cmnd_read.ExecuteReader();
+            Shoal.ShaolID = reader[0].ToString();
+            Shoal.Size = int.Parse(reader[1].ToString());
         }
 
 
-        void InsertTest(SQLiteConnection connection, int id, int val, string tablename)
+        void PrintTest(SQLiteConnection connection, string tablename)
         {
-            // Insert values in table
-            SQLiteCommand cmnd = connection.CreateCommand();
-            cmnd.CommandText = "INSERT INTO " + tablename + " (id, val) VALUES (" + id + ", " + val + ")";
-            cmnd.ExecuteNonQuery();
-        }
+            // Read and print all values in table
+            SQLiteCommand cmnd_read = connection.CreateCommand();
+            IDataReader reader;
+            string query = "SELECT * FROM" + tablename + "WHERE id='" + Shoal.ShaolID + "'";
+            cmnd_read.CommandText = query;
+            reader = cmnd_read.ExecuteReader();
 
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            while (reader.Read())
+            {
+                Debug.Log("id: " + reader[0].ToString());
+                Debug.Log("size: " + reader[1].ToString());
+                Debug.Log(Application.persistentDataPath);
+            }
         }
     }
 }
