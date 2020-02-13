@@ -24,6 +24,14 @@ public class TestDBConn : MonoBehaviour
     public Text vesselStorageText;
     public Text vesselProfitText;
 
+    //buttons
+    public Button fishBtn1;
+    public Button fishBtn2;
+    public Button fishBtn3;
+    public Button sellBtn;
+    public Button resetBtn;
+    public Button saveBtn;
+
     //Shoals
     Shoal testShoal1 = new Shoal("S01", 0);
     Shoal testShoal2 = new Shoal("S02", 0);
@@ -33,12 +41,16 @@ public class TestDBConn : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Create database
-        string connectionLink = "URI=file:" + Application.dataPath + "/" + "My_Test_Database";
+        //activate buttons
+        fishBtn1.onClick.AddListener(FishBtn1OnClick);
+        fishBtn2.onClick.AddListener(FishBtn2OnClick);
+        fishBtn3.onClick.AddListener(FishBtn3OnClick);
+        sellBtn.onClick.AddListener(sellBtnOnClick);
+        resetBtn.onClick.AddListener(resetBtnOnClick);
+        saveBtn.onClick.AddListener(saveBtnOnClick);
 
-        LoadGame(connectionLink);
-
-        SaveGame(connectionLink);
+        //load game
+        LoadGame();
     }
 
     //new test methods
@@ -60,10 +72,13 @@ public class TestDBConn : MonoBehaviour
         vesselProfitText.text = "Profit: " + (testBoat.Profit).ToString();
     }
 
-    public void LoadGame(string connectLink)
+    public void LoadGame()
     {
+        // Create database
+        string connectionLink = "URI=file:" + Application.dataPath + "/" + "My_Test_Database";
+
         // Open connection
-        SQLiteConnection connection = new SQLiteConnection(connectLink);
+        SQLiteConnection connection = new SQLiteConnection(connectionLink);
         connection.Open();
 
         //pulls the saved data from the database
@@ -72,15 +87,15 @@ public class TestDBConn : MonoBehaviour
         testShoal3.UpdateClass(connection, "shoals");
         testBoat.UpdateClass(connection, "vessels");
 
-        UpdateUI();
-
         connection.Close();
     }
 
-    public void SaveGame(string connectLink)
+    public void SaveGame()
     {
+        // Create database
+        string connectionLink = "URI=file:" + Application.dataPath + "/" + "My_Test_Database";
         // Open connection
-        SQLiteConnection connection = new SQLiteConnection(connectLink);
+        SQLiteConnection connection = new SQLiteConnection(connectionLink);
         connection.Open();
 
         //pulls the saved data from the database
@@ -88,8 +103,6 @@ public class TestDBConn : MonoBehaviour
         testShoal2.UpdateDB(connection, "shoals");
         testShoal3.UpdateDB(connection, "shoals");
         testBoat.UpdateDB(connection, "vessels");
-
-        UpdateUI();
 
         connection.Close();
     }
@@ -101,6 +114,60 @@ public class TestDBConn : MonoBehaviour
         testShoal3.Size = 300;
         testBoat.Storage = 0;
         testBoat.Profit = 0;
+
+        SaveGame();
+    }
+
+    // button methods
+    public void FishBtn1OnClick()
+    {
+        
+        if (testShoal1.Size >= 20)
+        {
+            testShoal1.Size -= 20;
+            testBoat.Storage += 20;
+        }
+    }
+
+    public void FishBtn2OnClick()
+    {
+
+        if (testShoal2.Size >= 20)
+        {
+            testShoal2.Size -= 20;
+            testBoat.Storage += 20;
+        }
+    }
+
+    public void FishBtn3OnClick()
+    {
+
+        if (testShoal3.Size >= 20)
+        {
+            testShoal3.Size -= 20;
+            testBoat.Storage += 20;
+        }
+    }
+
+    public void sellBtnOnClick()
+    {
+
+        if (testBoat.Storage > 0)
+        {
+            testBoat.Profit = (testBoat.Storage) * 5;
+            testBoat.Storage = 0;
+        }
+    }
+
+    public void resetBtnOnClick()
+    {
+        ResetGame();
+        SaveGame();
+    }
+
+    public void saveBtnOnClick()
+    {
+        SaveGame();
     }
 
     // original test stuff
@@ -133,6 +200,6 @@ public class TestDBConn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateUI();
     }
 }
