@@ -27,6 +27,7 @@ public class GridDB : MonoBehaviour
     public Button sellBtn;
     public Button resetBtn;
     public Button saveBtn;
+    public Button moveBtn;
 
     //grid
     public Button Grid0101;
@@ -41,16 +42,16 @@ public class GridDB : MonoBehaviour
     public Button Grid0302;
     public Button Grid0303;
 
+    //List<string> coordList = new List<string>() {"0101", "0102","0103", "0201", "0202", "0203", "0301", "0302", "0303"};
 
     //Shoals
-    ShoalDB testShoal1 = new ShoalDB("GS001", 0, "0000");
-    ShoalDB testShoal2 = new ShoalDB("GS002", 0, "0000");
-    ShoalDB testShoal3 = new ShoalDB("GS003", 0, "0000");
+    ShoalDB testShoal1 = new ShoalDB("GS001", 0, "0000", new List<string>() { "0101", "0102", "0103", "0201", "0202", "0203", "0301", "0302", "0303" });
+    ShoalDB testShoal2 = new ShoalDB("GS002", 0, "0000", new List<string>() { "0101", "0102", "0103", "0201", "0202", "0203", "0301", "0302", "0303" });
+    ShoalDB testShoal3 = new ShoalDB("GS003", 0, "0000", new List<string>() { "0101", "0102", "0103", "0201", "0202", "0203", "0301", "0302", "0303" });
     Vessel testBoat = new Vessel("V01", 0, 0);
 
     // lists
     List<ShoalDB> shoalList = new List<ShoalDB>();
-    List<Button> gridList = new List<Button>();
     List<Square> gridSquareList = new List<Square>();
 
 
@@ -61,6 +62,7 @@ public class GridDB : MonoBehaviour
         sellBtn.onClick.AddListener(sellBtnOnClick);
         resetBtn.onClick.AddListener(resetBtnOnClick);
         saveBtn.onClick.AddListener(saveBtnOnClick);
+        moveBtn.onClick.AddListener(moveBtnOnClick);
 
         //grid functions
         Grid0101.onClick.AddListener(delegate { GridSquareOnClick("0101"); });
@@ -105,19 +107,6 @@ public class GridDB : MonoBehaviour
         shoalList.Add(testShoal1);
         shoalList.Add(testShoal2);
         shoalList.Add(testShoal3);
-
-        //updating grid list
-        gridList.Add(Grid0101);
-        gridList.Add(Grid0102);
-        gridList.Add(Grid0103);
-
-        gridList.Add(Grid0201);
-        gridList.Add(Grid0202);
-        gridList.Add(Grid0203);
-
-        gridList.Add(Grid0301);
-        gridList.Add(Grid0302);
-        gridList.Add(Grid0303);
 
     }
 
@@ -168,7 +157,7 @@ public class GridDB : MonoBehaviour
         SaveGame();
     }
 
-    ////////////////////////////////////////////button functions ///////////////////////////////////////
+    //////////////////////////////////////////// button functions ///////////////////////////////////////
     public void sellBtnOnClick()
     {
 
@@ -190,6 +179,14 @@ public class GridDB : MonoBehaviour
         SaveGame();
     }
 
+    public void moveBtnOnClick()
+    {
+        foreach (var i in shoalList)
+        {
+            i.MoveRandom();
+        }
+    }
+
     ////////////////////////////////// grid click ////////////////////////////
     public void GridSquareOnClick(string coords)
     {
@@ -205,7 +202,6 @@ public class GridDB : MonoBehaviour
 
 
     /////////////////////////////////// other functions //////////////
-
     public void FishShoal(ShoalDB shoal)
     {
         if (shoal.Size >= 20)
@@ -218,13 +214,13 @@ public class GridDB : MonoBehaviour
     public void UpdateUI()
     {
         //updating shoals
-        shoalIDText1.text = "ID: " + testShoal1.ShaolID;
+        shoalIDText1.text = "ID: " + testShoal1.ShoalID;
         shoalSizeText1.text = "Size: " + (testShoal1.Size).ToString();
 
-        shoalIDText2.text = "ID: " + testShoal2.ShaolID;
+        shoalIDText2.text = "ID: " + testShoal2.ShoalID;
         shoalSizeText2.text = "Size: " + (testShoal2.Size).ToString();
 
-        shoalIDText3.text = "ID: " + testShoal3.ShaolID;
+        shoalIDText3.text = "ID: " + testShoal3.ShoalID;
         shoalSizeText3.text = "Size: " + (testShoal3.Size).ToString();
 
         //updating vessels
@@ -242,13 +238,13 @@ public class GridDB : MonoBehaviour
         }
 
         //update with shoal ids
-        foreach(var i in shoalList)
+        foreach (var i in shoalList)
         {
             foreach (var square in gridSquareList)
             {
                 if (i.Coords == square.Coords)
                 {
-                    square.GridSquare.GetComponentInChildren<Text>().text = (square.GridSquare.GetComponentInChildren<Text>().text) + i.ShaolID + " ";
+                    square.GridSquare.GetComponentInChildren<Text>().text = (square.GridSquare.GetComponentInChildren<Text>().text) + i.ShoalID + " ";
                 }
             }
         }
