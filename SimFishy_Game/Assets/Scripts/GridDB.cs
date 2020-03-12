@@ -45,9 +45,9 @@ public class GridDB : MonoBehaviour
     //List<string> coordList = new List<string>() {"0101", "0102","0103", "0201", "0202", "0203", "0301", "0302", "0303"};
 
     //Shoals
-    ShoalDB testShoal1 = new ShoalDB("GS001", 0, "0000", new List<string>() { "0101", "0102", "0103", "0201", "0202", "0203", "0301", "0302", "0303" });
-    ShoalDB testShoal2 = new ShoalDB("GS002", 0, "0000", new List<string>() { "0101", "0102", "0103", "0201", "0202", "0203", "0301", "0302", "0303" });
-    ShoalDB testShoal3 = new ShoalDB("GS003", 0, "0000", new List<string>() { "0101", "0102", "0103", "0201", "0202", "0203", "0301", "0302", "0303" });
+    ShoalDB testShoal1 = new ShoalDB("GS001", 0, "0000"); // TODO: set the coords in the default field of the class
+    ShoalDB testShoal2 = new ShoalDB("GS002", 0, "0000");
+    ShoalDB testShoal3 = new ShoalDB("GS003", 0, "0000");
     Vessel testBoat = new Vessel("V01", 0, 0);
 
     // lists

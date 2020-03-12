@@ -13,12 +13,12 @@ namespace DBClasses
         public string Coords { get; set; }
         public List<string> CoordList { get; set; }
 
-        public ShoalDB(string shoalID, int size, string coords, List<string> coordList)
+        public ShoalDB(string shoalID, int size, string coords)
         {
             ShoalID = shoalID;
             Size = size;
             Coords = coords;
-            CoordList = coordList;
+            CoordList = new List<string>() { "0101", "0102", "0103", "0201", "0202", "0203", "0301", "0302", "0303" };
         }
 
         public void SaveToDB(SQLiteConnection connection, string tablename)
