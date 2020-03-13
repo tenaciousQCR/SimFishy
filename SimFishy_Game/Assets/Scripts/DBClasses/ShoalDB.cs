@@ -18,7 +18,18 @@ namespace DBClasses
             ShoalID = shoalID;
             Size = size;
             Coords = coords;
-            CoordList = new List<string>() { "0101", "0102", "0103", "0201", "0202", "0203", "0301", "0302", "0303" };
+            CoordList = new List<string>() {
+                "0211", "0311", "0411", "0511", "0611",
+        "0110", "0210", "0310", "0410", "0510", "0610",
+        "0109", "0209", "0309", "0409", "0509", "0609", "0709",
+                "0208", "0308", "0408", "0508", "0608", "0708", "0808",
+                "0207", "0307", "0407", "0507", "0607", "0707", "0807",
+                "0206", "0306", "0406", "0506", "0606", "0706", "0806",
+                "0205", "0305", "0405", "0505", "0605", "0705", "0805",
+                        "0304", "0404", "0504", "0604", "0704", "0804",
+                        "0303", "0403", "0503", "0603",
+                                "0402", "0502", "0602",
+                                "0401", "0501"};
         }
 
         public void SaveToDB(SQLiteConnection connection, string tablename)
@@ -73,6 +84,16 @@ namespace DBClasses
         }
 
         public void FishShoal(Vessel boat)
+        {
+            if (Size >= 20)
+            {
+                Size -= 20;
+                boat.Storage += 20;
+            }
+        }
+
+        
+        public void FishShoal(VesselDB boat)
         {
             if (Size >= 20)
             {

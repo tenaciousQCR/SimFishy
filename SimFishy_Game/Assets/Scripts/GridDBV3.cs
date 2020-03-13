@@ -7,7 +7,7 @@ using System.Data.SQLite;
 using System.IO;
 using DBClasses;
 
-public class GridDB : MonoBehaviour
+public class GridDBV3 : MonoBehaviour
 {
     // Start is called before the first frame update
     public Text shoalIDText1;
@@ -29,26 +29,22 @@ public class GridDB : MonoBehaviour
     public Button saveBtn;
     public Button moveBtn;
 
-    //grid
-    public Button Grid0101;
-    public Button Grid0102;
-    public Button Grid0103;
+    //vessel action buttons
+    public Button upBtn;
+    public Button downBtn;
+    public Button leftBtn;
+    public Button rightBtn;
+    public Button fishBtn;
 
-    public Button Grid0201;
-    public Button Grid0202;
-    public Button Grid0203;
+    public GameObject Grid;
 
-    public Button Grid0301;
-    public Button Grid0302;
-    public Button Grid0303;
-
-    //List<string> coordList = new List<string>() {"0101", "0102","0103", "0201", "0202", "0203", "0301", "0302", "0303"};
+    private GridManager GameGrid;
 
     //Shoals
     ShoalDB testShoal1 = new ShoalDB("GS001", 0, "0000"); // TODO: set the coords in the default field of the class
     ShoalDB testShoal2 = new ShoalDB("GS002", 0, "0000");
     ShoalDB testShoal3 = new ShoalDB("GS003", 0, "0000");
-    Vessel testBoat = new Vessel("V01", 0, 0);
+    VesselDB testBoat = new VesselDB("V01", 0, 0, "0101");
 
     // lists
     List<ShoalDB> shoalList = new List<ShoalDB>();
@@ -58,47 +54,22 @@ public class GridDB : MonoBehaviour
 
     void Start()
     {
+        //grid set up
+        GameGrid = Grid.GetComponent<GridManager>();
+
         //button functions
         sellBtn.onClick.AddListener(sellBtnOnClick);
         resetBtn.onClick.AddListener(resetBtnOnClick);
         saveBtn.onClick.AddListener(saveBtnOnClick);
         moveBtn.onClick.AddListener(moveBtnOnClick);
 
-        //grid functions
-        Grid0101.onClick.AddListener(delegate { GridSquareOnClick("0101"); });
-        Grid0102.onClick.AddListener(delegate { GridSquareOnClick("0102"); });
-        Grid0103.onClick.AddListener(delegate { GridSquareOnClick("0103"); });
+        //vessel move functions
+        upBtn.onClick.AddListener(delegate { MoveOnClick(1); });
+        downBtn.onClick.AddListener(delegate { MoveOnClick(2); });
+        leftBtn.onClick.AddListener(delegate { MoveOnClick(3); });
+        rightBtn.onClick.AddListener(delegate { MoveOnClick(4); });
 
-        Grid0201.onClick.AddListener(delegate { GridSquareOnClick("0201"); });
-        Grid0202.onClick.AddListener(delegate { GridSquareOnClick("0202"); });
-        Grid0203.onClick.AddListener(delegate { GridSquareOnClick("0203"); });
-
-        Grid0301.onClick.AddListener(delegate { GridSquareOnClick("0301"); });
-        Grid0302.onClick.AddListener(delegate { GridSquareOnClick("0302"); });
-        Grid0303.onClick.AddListener(delegate { GridSquareOnClick("0303"); });
-
-        // set up squares and then add to the list
-        Square GS0101 = new Square(Grid0101, "0101");
-        gridSquareList.Add(GS0101);
-        Square GS0102 = new Square(Grid0102, "0102");
-        gridSquareList.Add(GS0102);
-        Square GS0103 = new Square(Grid0103, "0103");
-        gridSquareList.Add(GS0103);
-
-        Square GS0201 = new Square(Grid0201, "0201");
-        gridSquareList.Add(GS0201);
-        Square GS0202 = new Square(Grid0202, "0202");
-        gridSquareList.Add(GS0202);
-        Square GS0203 = new Square(Grid0203, "0203");
-        gridSquareList.Add(GS0203);
-
-        Square GS0301 = new Square(Grid0301, "0301");
-        gridSquareList.Add(GS0301);
-        Square GS0302 = new Square(Grid0302, "0302");
-        gridSquareList.Add(GS0302);
-        Square GS0303 = new Square(Grid0303, "0303");
-        gridSquareList.Add(GS0303);
-
+        fishBtn.onClick.AddListener(FishOnClick);
 
         //load game
         LoadGame();
@@ -124,7 +95,7 @@ public class GridDB : MonoBehaviour
         testShoal1.UpdateClass(connection, "gridShoals");
         testShoal2.UpdateClass(connection, "gridShoals");
         testShoal3.UpdateClass(connection, "gridShoals");
-        testBoat.UpdateClass(connection, "vessels");
+        testBoat.UpdateClass(connection, "gridVessels");
 
         connection.Close();
     }
@@ -141,7 +112,7 @@ public class GridDB : MonoBehaviour
         testShoal1.UpdateDB(connection, "gridShoals");
         testShoal2.UpdateDB(connection, "gridShoals");
         testShoal3.UpdateDB(connection, "gridShoals");
-        testBoat.UpdateDB(connection, "vessels");
+        testBoat.UpdateDB(connection, "gridVessels");
 
         connection.Close();
     }
@@ -187,22 +158,44 @@ public class GridDB : MonoBehaviour
         }
     }
 
-    ////////////////////////////////// grid click ////////////////////////////
-    public void GridSquareOnClick(string coords)
+    //////////////////////////////////////////////////////////////////// movement, fishing and grid click //////////////////////////// ////////////////////////////
+    public void FishOnClick()
     {
         foreach (var i in shoalList)
         {
-            if (i.Coords == coords)
+            if (i.Coords == testBoat.Coords)
             {
-                FishShoal(i);
+                i.FishShoal(testBoat);
             }
+        }
+    }
+
+    public void MoveOnClick(int direction)
+    {
+        //switch used for each direction
+        switch (direction)
+        {
+            case 1:
+                testBoat.MoveUp();
+                break;
+            case 2:
+                testBoat.MoveDown();
+                break;
+            case 3:
+                testBoat.MoveLeft();
+                break;
+            case 4:
+                testBoat.MoveRight();
+                break;
+            default:
+                break;
         }
 
     }
 
-    
 
     /////////////////////////////////// other functions //////////////
+    /*
     public void FishShoal(ShoalDB shoal)
     {
         if (shoal.Size >= 20)
@@ -211,6 +204,7 @@ public class GridDB : MonoBehaviour
             testBoat.Storage += 20;
         }
     }
+    */
 
     public void UpdateUI()
     {
@@ -233,15 +227,24 @@ public class GridDB : MonoBehaviour
     public void UpdateGrid()
     {
         //wipe the grid first
-        foreach (var square in gridSquareList)
+        foreach (var square in GameGrid.gridSquareList)
         {
             square.GridSquare.GetComponentInChildren<Text>().text = "";
+        }
+
+        //update boat location
+        foreach (var square in GameGrid.gridSquareList)
+        {
+            if (testBoat.Coords == square.Coords)
+            {
+                square.GridSquare.GetComponentInChildren<Text>().text = (square.GridSquare.GetComponentInChildren<Text>().text) + testBoat.VesselID + " ";
+            }
         }
 
         //update with shoal ids
         foreach (var i in shoalList)
         {
-            foreach (var square in gridSquareList)
+            foreach (var square in GameGrid.gridSquareList)
             {
                 if (i.Coords == square.Coords)
                 {
@@ -249,6 +252,9 @@ public class GridDB : MonoBehaviour
                 }
             }
         }
+
+        
+
     }
 
 
