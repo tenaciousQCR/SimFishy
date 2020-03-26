@@ -50,7 +50,7 @@ namespace DBClasses
                 + " SET storage = " + Storage
                 + ", profit = " + Profit
                 + ", coords = '" + Coords
-                + " WHERE id = '" + VesselID + "'";
+                + "' WHERE id = '" + VesselID + "'";
             cmnd.ExecuteNonQuery();
         }
 

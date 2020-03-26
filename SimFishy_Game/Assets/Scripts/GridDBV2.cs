@@ -44,7 +44,7 @@ public class GridDBV2 : MonoBehaviour
     ShoalDB testShoal1 = new ShoalDB("GS001", 0, "0000"); // TODO: set the coords in the default field of the class
     ShoalDB testShoal2 = new ShoalDB("GS002", 0, "0000");
     ShoalDB testShoal3 = new ShoalDB("GS003", 0, "0000");
-    VesselDB testBoat = new VesselDB("V01", 0, 0, "0101");
+    VesselDB testBoat = new VesselDB("V01", 0, 0, "0000");
 
     // lists
     List<ShoalDB> shoalList = new List<ShoalDB>();
@@ -96,6 +96,7 @@ public class GridDBV2 : MonoBehaviour
         testShoal2.UpdateClass(connection, "gridShoals");
         testShoal3.UpdateClass(connection, "gridShoals");
         testBoat.UpdateClass(connection, "gridVessels");
+        testBoat.PrintTest(connection, "gridVessels");
 
         connection.Close();
     }
@@ -113,6 +114,7 @@ public class GridDBV2 : MonoBehaviour
         testShoal2.UpdateDB(connection, "gridShoals");
         testShoal3.UpdateDB(connection, "gridShoals");
         testBoat.UpdateDB(connection, "gridVessels");
+        testBoat.PrintTest(connection, "gridVessels");
 
         connection.Close();
     }
