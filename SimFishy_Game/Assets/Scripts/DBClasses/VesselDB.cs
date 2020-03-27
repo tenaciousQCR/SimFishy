@@ -13,6 +13,8 @@ namespace DBClasses
         public int Profit { get; set; }
         public string Coords { get; set; }
         public List<string> CoordList { get; set; }
+        public List<string> PortList { get; set; }
+        public int AtPort { get; set; }
 
         public VesselDB(string vesselID, int storage, int profit, string coords)
         {
@@ -20,6 +22,7 @@ namespace DBClasses
             Storage = storage;
             Profit = profit;
             Coords = coords;
+            //defing the coords which the boat can travel too
             CoordList = new List<string>() {
                 "0211", "0311", "0411", "0511", "0611",
         "0110", "0210", "0310", "0410", "0510", "0610",
@@ -32,7 +35,12 @@ namespace DBClasses
                         "0303", "0403", "0503", "0603",
                                 "0402", "0502", "0602",
                                 "0401", "0501"};
-    }
+            //defining the port which the ships can refuel and sell stock
+            PortList = new List<string>() { "0211", "0208", "0304", "0402" };
+            //automatically not at the port then checks with method.
+            AtPort = 0;
+            isAtPort();
+            }
 
         public void SaveToDB(SQLiteConnection connection, string tablename)
         {
@@ -126,6 +134,30 @@ namespace DBClasses
             {
                 Debug.Log("Boat: " + VesselID + " tried to move up but failed");
             }
+        }
+
+        //used to check if the boat is at the port
+        public bool isAtPort()
+        {
+            //start by saying it is not at port and if a match is found in the port list then ammend it
+            AtPort = 0;
+            foreach (var i in PortList)
+            {
+                if(i == Coords)
+                {
+                    AtPort = 1;
+                }
+            }
+
+            if (AtPort == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         public void MoveDown()
