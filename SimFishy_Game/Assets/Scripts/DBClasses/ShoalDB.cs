@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Data;
 using System.Data.SQLite;
+using System;
+using Random = System.Random;
 
 namespace DBClasses
 {
@@ -11,6 +13,7 @@ namespace DBClasses
         public string ShoalID { get; set; }
         public int Size { get; set; }
         public string Coords { get; set; }
+        public int Age { get; set; }
         public List<string> CoordList { get; set; }
 
         public ShoalDB(string shoalID, int size, string coords)
@@ -18,6 +21,7 @@ namespace DBClasses
             ShoalID = shoalID;
             Size = size;
             Coords = coords;
+            Age = 1;
             CoordList = new List<string>() {
                 "0211", "0311", "0411", "0511", "0611",
         "0110", "0210", "0310", "0410", "0510", "0610",
@@ -35,7 +39,7 @@ namespace DBClasses
         public void SaveToDB(SQLiteConnection connection, string tablename)
         {
             SQLiteCommand cmnd = connection.CreateCommand();
-            cmnd.CommandText = "INSERT INTO " + tablename + " (id, size, coords) VALUES ('" + ShoalID + "', " + Size + "', " + Coords + ")";
+            cmnd.CommandText = "INSERT INTO " + tablename + " (id, size, coords, age) VALUES ('" + ShoalID + "', " + Size + ", '" + Coords + "', " + Age + ")";
             cmnd.ExecuteNonQuery();
         }
 
@@ -44,8 +48,9 @@ namespace DBClasses
             SQLiteCommand cmnd = connection.CreateCommand();
             cmnd.CommandText = "UPDATE " + tablename 
                 + " SET size = " + Size 
-                + ", coords = '" + Coords 
-                + "' WHERE id = '" + ShoalID + "'";
+                + ", coords = '" + Coords
+                + "', age = " + Age
+                + " WHERE id = '" + ShoalID + "'";
             cmnd.ExecuteNonQuery();
         }
 
@@ -61,6 +66,7 @@ namespace DBClasses
                 //ShoalID = reader[0].ToString();
                 Size = int.Parse(reader[1].ToString());
                 Coords = reader[2].ToString();
+                Age = int.Parse(reader[3].ToString());
                 //Debug.Log(Application.persistentDataPath);
             }
         }
@@ -95,11 +101,199 @@ namespace DBClasses
         
         public void FishShoal(VesselDB boat)
         {
-            if (Size >= 20)
+            Random random = new Random();
+            int catchSize = 0;
+            int randomGrade = 0;
+            int remainingStorage = 0;
+            //if there is more than 200 fish only take upto 200
+            if (Size < 100)
             {
-                Size -= 20;
-                boat.Storage += 20;
+                catchSize = random.Next(Size+1);
             }
+            else
+            {
+                catchSize = random.Next(100);
+            }
+
+            // the ages 1, 2 and 3 represent the young, medium and old shoals.
+            //this is used for the grade distribution
+            switch (Age)
+            {
+                //shoal is young
+                case 1:
+                    for (int i = 0; i < catchSize; i++)
+                    {
+                        //generate number between 4 and 6
+                        randomGrade = random.Next(4, 7);
+                        //add the fish to the boat
+                        switch (randomGrade)
+                        {
+                            //if the fish is grade 4 (roughly weight 3)
+                            case 4:
+                                remainingStorage = boat.MaxStorage - boat.Storage;
+                                if (remainingStorage >= 3)
+                                {
+                                    //add fish to storage weight and remove from the shoal
+                                    boat.Storage += 3;
+                                    Size--;
+                                }
+                                else
+                                {
+                                    Debug.Log("Not enough space");
+                                }
+                                break;
+                            //if the fish is grade 5 (roughly weight 2)
+                            case 5:
+                                remainingStorage = boat.MaxStorage - boat.Storage;
+                                if (remainingStorage >= 2)
+                                {
+                                    //add fish to storage weight and remove from the shoal
+                                    boat.Storage += 2;
+                                    Size--;
+                                }
+                                else
+                                {
+                                    Debug.Log("Not enough space");
+                                }
+                                break;
+                            //if the fish is grade 6
+                            case 6:
+                                remainingStorage = boat.MaxStorage - boat.Storage;
+                                if (remainingStorage >= 1)
+                                {
+                                    //add fish to storage weight and remove from the shoal
+                                    boat.Storage += 1;
+                                    Size--;
+                                }
+                                else
+                                {
+                                    Debug.Log("Not enough space");
+                                }
+                                break;
+                            default:
+                                Debug.Log("Age 1 shoal giving grade error");
+                                break;
+                        }
+                    }
+                    break;
+                //shoal is average
+                case 2:
+                    for (int i = 0; i < catchSize; i++)
+                    {
+                        //generate number between 2 and 4
+                        randomGrade = random.Next(2, 5);
+                        //add the fish to the boat
+                        switch (randomGrade)
+                        {
+                            //if the fish is grade 2 (roughly weight 5)
+                            case 2:
+                                remainingStorage = boat.MaxStorage - boat.Storage;
+                                if (remainingStorage >= 5)
+                                {
+                                    //add fish to storage weight and remove from the shoal
+                                    boat.Storage += 5;
+                                    Size--;
+                                }
+                                else
+                                {
+                                    Debug.Log("Not enough space");
+                                }
+                                break;
+                            //if the fish is grade 3 (roughly weight 4)
+                            case 3:
+                                remainingStorage = boat.MaxStorage - boat.Storage;
+                                if (remainingStorage >= 4)
+                                {
+                                    //add fish to storage weight and remove from the shoal
+                                    boat.Storage += 4;
+                                    Size--;
+                                }
+                                else
+                                {
+                                    Debug.Log("Not enough space");
+                                }
+                                break;
+                            //if the fish is grade 4 (roughly weight 3)
+                            case 4:
+                                remainingStorage = boat.MaxStorage - boat.Storage;
+                                if (remainingStorage >= 3)
+                                {
+                                    //add fish to storage weight and remove from the shoal
+                                    boat.Storage += 3;
+                                    Size--;
+                                }
+                                else
+                                {
+                                    Debug.Log("Not enough space");
+                                }
+                                break;
+                            default:
+                                Debug.Log("Age 2 shoal giving grade error");
+                                break;
+                        }
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; i < catchSize; i++)
+                    {
+                        //generate number between 1 and 3
+                        randomGrade = random.Next(1, 4);
+                        //add the fish to the boat
+                        switch (randomGrade)
+                        {
+                            //if the fish is grade 1 (roughly weight 6)
+                            case 1:
+                                remainingStorage = boat.MaxStorage - boat.Storage;
+                                if (remainingStorage >= 6)
+                                {
+                                    //add fish to storage weight and remove from the shoal
+                                    boat.Storage += 6;
+                                    Size--;
+                                }
+                                else
+                                {
+                                    Debug.Log("Not enough space");
+                                }
+                                break;
+                            //if the fish is grade 2 (roughly weight 5)
+                            case 2:
+                                remainingStorage = boat.MaxStorage - boat.Storage;
+                                if (remainingStorage >= 5)
+                                {
+                                    //add fish to storage weight and remove from the shoal
+                                    boat.Storage += 5;
+                                    Size--;
+                                }
+                                else
+                                {
+                                    Debug.Log("Not enough space");
+                                }
+                                break;
+                            //if the fish is grade 3 (roughly weight 4)
+                            case 3:
+                                remainingStorage = boat.MaxStorage - boat.Storage;
+                                if (remainingStorage >= 4)
+                                {
+                                    //add fish to storage weight and remove from the shoal
+                                    boat.Storage += 4;
+                                    Size--;
+                                }
+                                else
+                                {
+                                    Debug.Log("Not enough space");
+                                }
+                                break;
+                            default:
+                                Debug.Log("Age 3 shoal giving grade error");
+                                break;
+                        }
+                    }
+                    break;
+                default:
+                    Debug.Log("Default age selected in fishing shoal");
+                    break;
+            }
+
         }
 
         // moving functions
@@ -250,7 +444,8 @@ namespace DBClasses
 
         public void MoveRandom()
         {
-            int randint = Random.Range(1, 5);
+            Random random = new Random();
+            int randint = random.Next(1, 5);
 
             switch (randint) {
                 case 1:

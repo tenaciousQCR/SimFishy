@@ -9,19 +9,32 @@ namespace DBClasses
     public class VesselDB : MonoBehaviour
     {
         public string VesselID { get; set; }
-        public int Storage { get; set; }
-        public int Profit { get; set; }
         public string Coords { get; set; }
+        public int Fuel { get; set; }
+        public int MaxFuel { get; set; }
+        public int Profit { get; set; }
+        public int Storage { get; set; }
+        public int MaxStorage { get; set; }
+        public int Caught { get; set; }
+        public int Quota { get; set; }
+
         public List<string> CoordList { get; set; }
         public List<string> PortList { get; set; }
         public int AtPort { get; set; }
 
-        public VesselDB(string vesselID, int storage, int profit, string coords)
+        public VesselDB(string vesselID, string coords)
         {
             VesselID = vesselID;
-            Storage = storage;
-            Profit = profit;
             Coords = coords;
+            Fuel = 100;
+            MaxFuel = 100;
+            Profit = 0;
+            Storage = 0;
+            MaxStorage = 5000;
+            Storage = 0;
+            MaxStorage = 1000;
+
+
             //defing the coords which the boat can travel too
             CoordList = new List<string>() {
                 "0211", "0311", "0411", "0511", "0611",
@@ -40,13 +53,16 @@ namespace DBClasses
             //automatically not at the port then checks with method.
             AtPort = 0;
             isAtPort();
+            
             }
 
         public void SaveToDB(SQLiteConnection connection, string tablename)
         {
             SQLiteCommand cmnd = connection.CreateCommand();
             cmnd.CommandText = "INSERT INTO " + tablename
-                + " (id, storage, profit, coords) VALUES ('" + VesselID + "', " + Storage + ", " + Profit + "', " + Coords + ")";
+                + " (id, coords, fuel, maxFuel, profit, caught, quota, storage, maxStorage) VALUES ('"
+                + VesselID + "', '" + Coords + "', " + Fuel + ", " + MaxFuel + ", " 
+                + Profit + ", " + Caught + ", " + Quota + ", " + Storage + ", " + MaxStorage + ")";
             cmnd.ExecuteNonQuery();
         }
 
@@ -55,10 +71,15 @@ namespace DBClasses
             SQLiteCommand cmnd = connection.CreateCommand();
             cmnd.CommandText =
                 "UPDATE " + tablename
-                + " SET storage = " + Storage
+                + " SET coords = '" + Coords
+                + "', fuel = " + Fuel
+                + ", maxFuel = " + MaxFuel
                 + ", profit = " + Profit
-                + ", coords = '" + Coords
-                + "' WHERE id = '" + VesselID + "'";
+                + ", caught = " + Caught
+                + ", quota = " + Quota
+                + ", storage = " + Storage
+                + ", maxStorage = " + MaxStorage
+                + " WHERE id = '" + VesselID + "'";
             cmnd.ExecuteNonQuery();
         }
 
@@ -72,9 +93,15 @@ namespace DBClasses
             while (reader.Read())
             {
                 //VesselID = reader[0].ToString();
-                Storage = int.Parse(reader[1].ToString());
-                Profit = int.Parse(reader[2].ToString());
-                Coords = reader[3].ToString();
+                Coords = reader[1].ToString();
+                Fuel = int.Parse(reader[2].ToString());
+                MaxFuel = int.Parse(reader[3].ToString());
+                Profit = int.Parse(reader[4].ToString());
+                Caught = int.Parse(reader[5].ToString());
+                Quota = int.Parse(reader[6].ToString());
+                Storage = int.Parse(reader[7].ToString());
+                MaxStorage = int.Parse(reader[8].ToString());
+
                 //Debug.Log(Application.persistentDataPath);
             }
         }
@@ -126,8 +153,17 @@ namespace DBClasses
                 //if the new coordinates are on the list of possible coordinates, the shoal shall move
                 if (x == x2 && newy == y2)
                 {
-                    Debug.Log("Boat: " + VesselID + " moved from " + Coords + " to " + newCoords);
-                    Coords = newCoords;
+                    if(Fuel > 0)
+                    {
+                        Debug.Log("Boat: " + VesselID + " moved from " + Coords + " to " + newCoords);
+                        Coords = newCoords;
+                        //remove some fuel
+                        Fuel -= 5;
+                    }
+                    else
+                    {
+                        Debug.Log("Boat: " + VesselID + " tried to move up but Is out of Fuel");
+                    }
                 }
             }
             if (Coords == oldCoords)
@@ -186,8 +222,17 @@ namespace DBClasses
                 //if the new coordinates are on the list of possible coordinates, the shoal shall move
                 if (x == x2 && newy == y2)
                 {
-                    Debug.Log("Boat: " + VesselID + " moved from " + Coords + " to " + newCoords);
-                    Coords = newCoords;
+                    if (Fuel > 0)
+                    {
+                        Debug.Log("Boat: " + VesselID + " moved from " + Coords + " to " + newCoords);
+                        Coords = newCoords;
+                        //remove some fuel
+                        Fuel -= 5;
+                    }
+                    else
+                    {
+                        Debug.Log("Boat: " + VesselID + " tried to move up but Is out of Fuel");
+                    }
                 }
             }
             if (Coords == oldCoords)
@@ -222,8 +267,17 @@ namespace DBClasses
                 //if the new coordinates are on the list of possible coordinates, the shoal shall move
                 if (newx == x2 && y == y2)
                 {
-                    Debug.Log("Boat: " + VesselID + " moved from " + Coords + " to " + newCoords);
-                    Coords = newCoords;
+                    if (Fuel > 0)
+                    {
+                        Debug.Log("Boat: " + VesselID + " moved from " + Coords + " to " + newCoords);
+                        Coords = newCoords;
+                        //remove some fuel
+                        Fuel -= 5;
+                    }
+                    else
+                    {
+                        Debug.Log("Boat: " + VesselID + " tried to move up but Is out of Fuel");
+                    }
                 }
             }
             if (Coords == oldCoords)
@@ -259,8 +313,17 @@ namespace DBClasses
                 //if the new coordinates are on the list of possible coordinates, the shoal shall move
                 if (newx == x2 && y == y2)
                 {
-                    Debug.Log("Boat: " + VesselID + " moved from " + Coords + " to " + newCoords);
-                    Coords = newCoords;
+                    if (Fuel > 0)
+                    {
+                        Debug.Log("Boat: " + VesselID + " moved from " + Coords + " to " + newCoords);
+                        Coords = newCoords;
+                        //remove some fuel
+                        Fuel -= 5;
+                    }
+                    else
+                    {
+                        Debug.Log("Boat: " + VesselID + " tried to move up but Is out of Fuel");
+                    }
                 }
             }
             if (Coords == oldCoords)
