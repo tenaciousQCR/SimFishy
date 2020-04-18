@@ -23,6 +23,7 @@ namespace DBClasses
             Coords = coords;
             Age = 1;
             CoordList = new List<string>() {
+                "0212", "0312", "0412", "0512", "0612",
                 "0211", "0311", "0411", "0511", "0611",
         "0110", "0210", "0310", "0410", "0510", "0610",
         "0109", "0209", "0309", "0409", "0509", "0609", "0709",
@@ -121,6 +122,7 @@ namespace DBClasses
             {
                 //shoal is young
                 case 1:
+                case 2:
                     for (int i = 0; i < catchSize; i++)
                     {
                         //generate number between 4 and 6
@@ -177,7 +179,9 @@ namespace DBClasses
                     }
                     break;
                 //shoal is average
-                case 2:
+                case 3:
+                case 4:
+                case 5:
                     for (int i = 0; i < catchSize; i++)
                     {
                         //generate number between 2 and 4
@@ -233,7 +237,7 @@ namespace DBClasses
                         }
                     }
                     break;
-                case 3:
+                default:
                     for (int i = 0; i < catchSize; i++)
                     {
                         //generate number between 1 and 3
@@ -289,9 +293,11 @@ namespace DBClasses
                         }
                     }
                     break;
+                /*
                 default:
                     Debug.Log("Default age selected in fishing shoal");
                     break;
+                */
             }
 
         }

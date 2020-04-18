@@ -263,17 +263,6 @@ public class GridDBV2 : MonoBehaviour
     }
 
 
-    /////////////////////////////////// other functions //////////////
-    /*
-    public void FishShoal(ShoalDB shoal)
-    {
-        if (shoal.Size >= 20)
-        {
-            shoal.Size -= 20;
-            testBoat.Storage += 20;
-        }
-    }
-    */
     public void UpdateVesselUI()
     {
         //updating vessels
@@ -326,6 +315,8 @@ public class GridDBV2 : MonoBehaviour
         foreach (var square in GameGrid.gridSquareList)
         {
             square.GridSquare.GetComponentInChildren<Text>().text = "";
+            square.GridSquare.GetComponent<Image>().color = Color.white;
+            square.TotalFish = 0;
         }
 
         //update boat location
@@ -338,6 +329,7 @@ public class GridDBV2 : MonoBehaviour
         }
 
         //update with shoal ids
+        /*
         foreach (var i in shoalList)
         {
             foreach (var square in GameGrid.gridSquareList)
@@ -346,6 +338,52 @@ public class GridDBV2 : MonoBehaviour
                 {
                     square.GridSquare.GetComponentInChildren<Text>().text = (square.GridSquare.GetComponentInChildren<Text>().text) + i.ShoalID + " ";
                 }
+            }
+        }
+        */
+
+        //update with shoal colours
+        foreach (var i in shoalList)
+        {
+            foreach (var square in GameGrid.gridSquareList)
+            {
+                //adds the total number of fish in the area
+                if (i.Coords == square.Coords)
+                {
+                    square.TotalFish += i.Size; 
+                }
+
+                //determining colour
+                if (square.TotalFish >= 50000000)
+                {
+                    square.GridSquare.GetComponent<Image>().color = new Color(0f / 255f, 0f / 255f, 204f / 255f);
+                }
+
+                else if (square.TotalFish >= 5000000 && square.TotalFish < 50000000)
+                {
+                    square.GridSquare.GetComponent<Image>().color = new Color(0f / 255f, 0f / 255f, 255f / 255f);
+                }
+
+                else if (square.TotalFish >= 500000 && square.TotalFish < 5000000)
+                {
+                    square.GridSquare.GetComponent<Image>().color = new Color(51f / 255f, 51f / 255f, 255f / 255f);
+                }
+
+                else if (square.TotalFish >= 50000 && square.TotalFish < 500000)
+                {
+                    square.GridSquare.GetComponent<Image>().color = new Color(102f / 255f, 102f / 255f, 255f / 255f);
+                }
+
+                else if (square.TotalFish >= 5000 && square.TotalFish < 50000)
+                {
+                    square.GridSquare.GetComponent<Image>().color = new Color(153f / 255f, 153f / 255f, 255f / 255f);
+                }
+
+                else if (square.TotalFish >= 500 && square.TotalFish < 5000)
+                {
+                    square.GridSquare.GetComponent<Image>().color = new Color(204f / 255f, 204f / 255f, 255f / 255f);
+                }
+                
             }
         }
     }

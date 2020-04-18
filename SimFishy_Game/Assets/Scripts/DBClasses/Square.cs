@@ -7,10 +7,13 @@ public class Square : MonoBehaviour
 {
     public Button GridSquare { get; set; }
     public string Coords { get; set; }
+    public int TotalFish { get; set; }
 
     public Square(Button gridSquare, string coords)
     {
         GridSquare = gridSquare;
         Coords = coords;
+        TotalFish = 0;
     }
+
 }

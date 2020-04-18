@@ -10,6 +10,12 @@ using DBClasses;
 public class GridManager : MonoBehaviour
 {
     //grid
+    public Button Grid0212;
+    public Button Grid0312;
+    public Button Grid0412;
+    public Button Grid0512;
+    public Button Grid0612;
+
     public Button Grid0211;
     public Button Grid0311;
     public Button Grid0411;
@@ -85,6 +91,7 @@ public class GridManager : MonoBehaviour
 
 
     public List<string> coordList = new List<string>() {
+                "0212", "0312", "0412", "0512", "0612",
                 "0211", "0311", "0411", "0511", "0611",
         "0110", "0210", "0310", "0410", "0510", "0610", 
         "0109", "0209", "0309", "0409", "0509", "0609", "0709",
@@ -103,6 +110,17 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Square GS0212 = new Square(Grid0212, "0212");
+        gridSquareList.Add(GS0212);
+        Square GS0312 = new Square(Grid0312, "0312");
+        gridSquareList.Add(GS0312);
+        Square GS0412 = new Square(Grid0412, "0412");
+        gridSquareList.Add(GS0412);
+        Square GS0512 = new Square(Grid0512, "0512");
+        gridSquareList.Add(GS0512);
+        Square GS0612 = new Square(Grid0612, "0612");
+        gridSquareList.Add(GS0612);
+
         Square GS0211 = new Square(Grid0211, "0211");
         gridSquareList.Add(GS0211);
         Square GS0311 = new Square(Grid0311, "0311");
